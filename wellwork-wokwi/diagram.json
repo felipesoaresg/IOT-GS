@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "author": "FocusFlow",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 100
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_crise",
+      "top": 50,
+      "left": -50,
+      "attrs": { "color": "red", "label": "CRISE" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_verde",
+      "top": -50,
+      "left": 250,
+      "attrs": { "color": "green", "label": "Timer" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_amarelo",
+      "top": 0,
+      "left": 250,
+      "attrs": { "color": "yellow", "label": "Lembrete" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_vermelho",
+      "top": 50,
+      "left": 250,
+      "attrs": { "color": "red", "label": "Crise" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 120,
+      "left": 250
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -30,
+      "left": 220,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 20,
+      "left": 220,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 70,
+      "left": 220,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    ["esp:GND.1", "btn_crise:2.r", "black", ["v:20"]],
+    ["esp:D4", "btn_crise:1.l", "blue", ["h:-30"]],
+    
+    ["esp:D12", "r1:1", "green", ["h:20"]],
+    ["r1:2", "led_verde:A", "green", []],
+    ["led_verde:C", "esp:GND.1", "black", []],
+    
+    ["esp:D13", "r2:1", "yellow", ["h:20"]],
+    ["r2:2", "led_amarelo:A", "yellow", []],
+    ["led_amarelo:C", "esp:GND.1", "black", []],
+    
+    ["esp:D14", "r3:1", "red", ["h:20"]],
+    ["r3:2", "led_vermelho:A", "red", []],
+    ["led_vermelho:C", "esp:GND.1", "black", []],
+    
+    ["esp:D27", "buzzer:1", "purple", ["h:30"]],
+    ["buzzer:2", "esp:GND.1", "black", []]
+  ]
+}
