@@ -1,0 +1,353 @@
+[
+    {
+        "id": "f185f9bf3a8efea9",
+        "type": "tab",
+        "label": "WellWork IoT",
+        "disabled": false
+    },
+    {
+        "id": "01c1c2217a8b48a6",
+        "type": "mqtt in",
+        "z": "f185f9bf3a8efea9",
+        "name": "Recebe Crise",
+        "topic": "wellwork/crisis",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "broker_hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "d40a540fd1df265c",
+                "f036d1d7bd07007a"
+            ]
+        ]
+    },
+    {
+        "id": "d40a540fd1df265c",
+        "type": "function",
+        "z": "f185f9bf3a8efea9",
+        "name": "Processar Crise",
+        "func": "msg.payload = {\n    alerta: 'CRISE DETECTADA',\n    hora: new Date().toLocaleTimeString('pt-BR'),\n    mensagem: 'Usuário acionou botão de crise'\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "e94a926e50864e07"
+            ]
+        ]
+    },
+    {
+        "id": "f036d1d7bd07007a",
+        "type": "debug",
+        "z": "f185f9bf3a8efea9",
+        "name": "Log Crise Raw",
+        "active": true,
+        "tosidebar": true,
+        "x": 330,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e94a926e50864e07",
+        "type": "debug",
+        "z": "f185f9bf3a8efea9",
+        "name": "Log Crise Processada",
+        "active": true,
+        "tosidebar": true,
+        "x": 570,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2da340d7ab3294f7",
+        "type": "mqtt out",
+        "z": "f185f9bf3a8efea9",
+        "name": "Envia Timer",
+        "topic": "wellwork/timer",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq",
+        "x": 530,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "c69239c8da154a26",
+        "type": "inject",
+        "z": "f185f9bf3a8efea9",
+        "name": "Iniciar Timer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"acao\":\"iniciar\",\"minutos\":25}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "132c1e2263ec4d83"
+            ]
+        ]
+    },
+    {
+        "id": "e3c2934a18280df6",
+        "type": "inject",
+        "z": "f185f9bf3a8efea9",
+        "name": "Parar Timer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"acao\":\"parar\"}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 260,
+        "wires": [
+            [
+                "132c1e2263ec4d83"
+            ]
+        ]
+    },
+    {
+        "id": "132c1e2263ec4d83",
+        "type": "function",
+        "z": "f185f9bf3a8efea9",
+        "name": "Formatar Timer",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "2da340d7ab3294f7",
+                "4e1c45806f30ead5"
+            ]
+        ]
+    },
+    {
+        "id": "4e1c45806f30ead5",
+        "type": "debug",
+        "z": "f185f9bf3a8efea9",
+        "name": "Log Timer",
+        "active": true,
+        "tosidebar": true,
+        "x": 530,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "d843e8a83f25bfd7",
+        "type": "mqtt out",
+        "z": "f185f9bf3a8efea9",
+        "name": "Envia Lembrete",
+        "topic": "wellwork/reminder",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq",
+        "x": 540,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "f9f680c36f8c2b2c",
+        "type": "inject",
+        "z": "f185f9bf3a8efea9",
+        "name": " Lembrete Água",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"texto\":\"Hora de beber água!\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "c8644645c4e57934"
+            ]
+        ]
+    },
+    {
+        "id": "3e9e7022b535afbc",
+        "type": "inject",
+        "z": "f185f9bf3a8efea9",
+        "name": " Lembrete Pausa",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"texto\":\"Hora de uma pausa!\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 420,
+        "wires": [
+            [
+                "c8644645c4e57934"
+            ]
+        ]
+    },
+    {
+        "id": "c8644645c4e57934",
+        "type": "function",
+        "z": "f185f9bf3a8efea9",
+        "name": " Formatar Lembrete",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 400,
+        "wires": [
+            [
+                "d843e8a83f25bfd7",
+                "631c2d8d6de080d6"
+            ]
+        ]
+    },
+    {
+        "id": "631c2d8d6de080d6",
+        "type": "debug",
+        "z": "f185f9bf3a8efea9",
+        "name": "Log Lembrete",
+        "active": true,
+        "tosidebar": true,
+        "x": 540,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "fb74eabf9a2bacd7",
+        "type": "mqtt in",
+        "z": "f185f9bf3a8efea9",
+        "name": "Status ESP32",
+        "topic": "wellwork/status",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "broker_hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 540,
+        "wires": [
+            [
+                "948a278a150b8bed"
+            ]
+        ]
+    },
+    {
+        "id": "948a278a150b8bed",
+        "type": "debug",
+        "z": "f185f9bf3a8efea9",
+        "name": "Log Status",
+        "active": true,
+        "tosidebar": true,
+        "x": 330,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "927ccd9681bf4ab9",
+        "type": "comment",
+        "z": "f185f9bf3a8efea9",
+        "name": "ALERTA DE CRISE",
+        "info": "",
+        "x": 120,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "982b603283ebc32d",
+        "type": "comment",
+        "z": "f185f9bf3a8efea9",
+        "name": "CONTROLE DO TIMER",
+        "info": "",
+        "x": 120,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "910ccf90229a0fb6",
+        "type": "comment",
+        "z": "f185f9bf3a8efea9",
+        "name": "LEMBRETES",
+        "info": "",
+        "x": 110,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "eb46d47d566d622d",
+        "type": "comment",
+        "z": "f185f9bf3a8efea9",
+        "name": "STATUS DO DISPOSITIVO",
+        "info": "",
+        "x": 140,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "broker_hivemq",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "nodered_focusflow",
+        "autoConnect": true,
+        "keepalive": "60",
+        "cleansession": true
+    }
+]
